@@ -30,3 +30,9 @@ crontab -l 2>/dev/null | grep "$DDNS_SCRIPT"
 echo ""
 echo "🚀 立即执行一次 DDNS 更新..."
 "$DDNS_SCRIPT"
+
+# 安装 nyanpass 节点客户端
+# 安装过程中需要确认两次 y，这里用 printf 自动输入，避免交互阻塞
+echo ""
+echo "🐱 正在安装 nyanpass 节点客户端..."
+printf 'y\ny\n' | bash <(curl -fLSs https://dl.nyafw.com/download/nyanpass-install.sh) rel_nodeclient "-t b4e510b1-1bfa-49c5-9a08-87cdd381188e -u https://ny.pgupy.com"
