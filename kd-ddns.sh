@@ -4,9 +4,22 @@
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 DDNS_SCRIPT="$SCRIPT_DIR/cf-ddns.sh"
+DDNS_URL="https://raw.githubusercontent.com/ouyangss/KD-DDNS-max/main/cf-ddns.sh"
 
 if [ ! -f "$DDNS_SCRIPT" ]; then
-  echo "错误：找不到 cf-ddns.sh，路径: $DDNS_SCRIPT"
+  echo "⚠️ 找不到 cf-ddns.sh，正在下载到：$DDNS_SCRIPT"
+  if command -v curl >/dev/null 2>&1; then
+    curl -fL -o "$DDNS_SCRIPT" "$DDNS_URL"
+  elif command -v wget >/dev/null 2>&1; then
+    wget -O "$DDNS_SCRIPT" "$DDNS_URL"
+  else
+    echo "错误：未找到 curl 或 wget，无法下载 cf-ddns.sh"
+    exit 1
+  fi
+fi
+
+if [ ! -s "$DDNS_SCRIPT" ]; then
+  echo "错误：cf-ddns.sh 下载失败或文件为空，路径: $DDNS_SCRIPT"
   exit 1
 fi
 

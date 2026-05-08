@@ -1,50 +1,56 @@
-# 通过此项目修改
-## [https://github.com/yulewang/cloudflare-api-v4-ddns](https://github.com/yulewang/cloudflare-api-v4-ddns)
+# KD-DDNS
 
+KD-DDNS 是一个用于 Cloudflare DDNS 更新和一键部署的脚本仓库。
 
-# 一键代码
+## 文件说明
 
+- `cf-ddns.sh`：Cloudflare 动态 DNS 更新脚本
+- `kd-ddns.sh`：一键部署脚本，会自动下载 `cf-ddns.sh`、设置定时任务、执行一次更新，并继续安装 `nyanpass`
 
-```
-curl -L -O -s https://raw.githubusercontent.com/xb0or/KD-DDNS/main/kd-ddns.sh && chmod +x kd-ddns.sh && ./kd-ddns.sh
-```
+## 使用方式
 
-# 使用教程
-## 选择服务器类型
+### 1. 下载一键脚本
 
-### 1.国外服务器(有TG通知）
-
-### 2.国内服务器(无通知)
-
-
-#### 请输入主域名(eg:example.com)：example.com
-
-#### 请输入子域名(eg:123.example.com 只需填入123)：123
-
-#### 请输入 cloudflare API ：12345678999999
- 在 https://dash.cloudflare.com/profile/api-tokens 中获得Global API Key
-
-
-#### 请输入 cloudflare Username: 123456789@gmail.com
-```
-为账号邮箱
-```
-#### 请输入TG机器人token：123456:abcderg
-
-在此机器人创建@BotFather
-
-#### 请输入TG接收人ID:123456789
-
-```
-1、打开Telegram，在搜索栏搜索    @userinfobot  
-2、选择点击灰色头像
-3、点击 Start
-4、将第二行Id后数字填入
+```bash
+curl -L -O -s https://raw.githubusercontent.com/ouyangss/KD-DDNS-max/main/kd-ddns.sh
+chmod +x kd-ddns.sh
+./kd-ddns.sh
 ```
 
-`cf-ddns.sh` 如果IP无变化则不运行
+### 2. 脚本会自动处理
 
-`cf-ddns.sh -f true` 为无论IP是否改变强制运行
+`kd-ddns.sh` 会自动完成以下步骤：
 
-# 后期修改 
-一键脚本为一次性 如续修改到 `/usr/local/bin/cf-ddns.sh` 进行手动修改 或者删除此文件再运行一键
+- 检查本地是否存在 `cf-ddns.sh`
+- 如不存在则自动从仓库下载
+- 为 `cf-ddns.sh` 添加执行权限
+- 写入 crontab，每分钟检查一次公网 IP
+- 立即执行一次 DDNS 更新
+- 继续执行 `nyanpass` 安装流程
+
+## `cf-ddns.sh` 使用参数
+
+你也可以单独运行 `cf-ddns.sh`：
+
+```bash
+./cf-ddns.sh -k your_cloudflare_key -u your_email -z example.com -h home -t A
+```
+
+常用参数：
+
+- `-k`：Cloudflare API Key
+- `-u`：Cloudflare 账号邮箱
+- `-z`：主域名
+- `-h`：子域名或完整记录名
+- `-t`：记录类型，`A` 或 `AAAA`
+- `-f true`：强制更新
+
+## 说明
+
+- `A` 记录用于 IPv4
+- `AAAA` 记录用于 IPv6
+- 如果记录名不是完整域名，脚本会自动补全
+
+## 提示
+
+建议在固定目录中维护脚本，避免后续路径变化影响 crontab 任务。
