@@ -28,6 +28,16 @@ chmod +x kd-ddns.sh
 - 立即执行一次 DDNS 更新
 - 继续执行 `nyanpass` 安装流程
 
+### 3. nyanpass 安装说明
+
+`kd-ddns.sh` 在安装 `nyanpass` 时会自动预填 3 次 `y`，对应以下交互项：
+
+- 请输入服务名：默认直接回车使用 `nyanpass`
+- 是否优化系统参数：自动选择 `y`
+- 是否安装常用工具：自动选择 `y`
+
+这样可以避免安装过程卡在交互提示。
+
 ## `cf-ddns.sh` 使用参数
 
 你也可以单独运行 `cf-ddns.sh`：
